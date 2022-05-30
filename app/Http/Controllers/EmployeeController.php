@@ -2,31 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\EmployeeRequest;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 use App\Models\Employee;
+use App\Services\EmployeeService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    protected EmployeeService $service;
+
+    public function __construct(EmployeeService $service)
     {
-        //
+        $this->service = $service;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request): JsonResponse
     {
-        return Employee::create($request->all());
+        return response()->json($this->service->create($request->validated()));
     }
 
     /**
@@ -37,34 +31,26 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return $employee;
+        if($employee) {
+            $response = [
+                'employee' => $employee,
+                'user' => $employee->user,
+            ];
+        }
+        return $response;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee): JsonResponse
     {
-        $this->authorize('update', $employee);
+        $this->authorize('employee', [$employee, $request->user_id]);
 
-        $employee = Employee::findOrFail($employee);
-        $employee->update($request->all());
-
-        return $employee;
+        return response()->json($this->service->update($employee, $request->validated()));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Employee $employee)
+    public function destroy(Request $request, Employee $employee): JsonResponse
     {
-        return Employee::destroy($employee);
+        $this->authorize('employee', [$employee, $request->user_id]);
+
+        return response()->json($this->service->delete($employee));
     }
 }

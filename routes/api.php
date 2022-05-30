@@ -1,32 +1,17 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
-use App\Models\Employee;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::post('/employee', [EmployeeController::class, 'store'])->name('store');
+    Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('show');
+    Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
+    Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
-Route::get('/testa', function (){
-    return 'Test ok';
-});
-
-Route::post('/employee', [EmployeeController::class, 'store']);
-Route::get('/employee/{employee}', [EmployeeController::class, 'show']);
-Route::put('/employee/{employee}', [EmployeeController::class, 'update']);
-Route::delete('/employee/{employee}', [EmployeeController::class, 'destroi']);
-
-// Route::apiResource('employee', EmployeeController::class);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);

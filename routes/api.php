@@ -9,6 +9,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
     Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('show');
     Route::put('/employee/{employee}', [EmployeeController::class, 'update'])->name('update');
     Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
+    Route::post('/import', [EmployeeController::class, 'import']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

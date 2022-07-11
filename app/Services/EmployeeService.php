@@ -10,7 +10,6 @@ class EmployeeService
     {
         $data = array_merge($data, ['user_id' => auth()->user()->id]);
 
-
         return Employee::create($data);
     }
 

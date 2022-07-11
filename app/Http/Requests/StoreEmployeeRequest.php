@@ -20,8 +20,8 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             'name'  => 'required|string',
-            'email' => 'required|email',
-            'cpf'   => 'required|string',
+            'email' => 'required|email|unique:employees,email',
+            'cpf'   => 'required|integer',
         ];
     }
 }

@@ -6,7 +6,7 @@ use App\Models\Employee;
 
 class EmployeeService
 {
-    public function create(array $data)
+    public function create(array $data): bool
     {
         $data = array_merge($data, ['user_id' => auth()->user()->id]);
 

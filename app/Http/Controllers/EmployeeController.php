@@ -39,7 +39,7 @@ class EmployeeController extends Controller
         return response()->json($this->service->delete($employee));
     }
 
-    public function import(Request $request)
+    public function import(Request $request): JsonResponse
     {
         Excel::import(new EmployeesImport, $request->file);
 

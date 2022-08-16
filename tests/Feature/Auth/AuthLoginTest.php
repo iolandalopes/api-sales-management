@@ -1,13 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Auth;
 
 use App\Models\User;
-use App\Traits\MongoRefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
-class AuthControllerTest extends TestCase
+class AuthLoginTest extends TestCase
 {
     public function testWhenCallRouteLoginResponse200(): void
     {

@@ -3,12 +3,16 @@
 namespace App\Services;
 
 use App\Models\Employee;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class EmployeeService
 {
-    public function create(array $data): bool
+    public function create(array $data, string $companyId): Model
     {
-        $data = array_merge($data, ['user_id' => auth()->user()->id]);
+        $data = array_merge($data, [
+            'user_id' => auth()->user()->id,
+            'companyId' => $companyId,
+        ]);
 
         return Employee::create($data);
     }

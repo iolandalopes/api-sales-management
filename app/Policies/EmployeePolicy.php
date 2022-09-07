@@ -13,5 +13,4 @@ class EmployeePolicy
     {
         return json_decode($userId)->_id === $employee->user_id;
     }
-
 }

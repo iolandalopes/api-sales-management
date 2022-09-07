@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 use App\Imports\EmployeesImport;
+use App\Models\Company;
 use App\Models\Employee;
 use App\Services\EmployeeService;
 use Illuminate\Http\JsonResponse;
@@ -20,9 +21,9 @@ class EmployeeController extends Controller
         $this->service = $service;
     }
 
-    public function store(StoreEmployeeRequest $request): JsonResponse
+    public function store(StoreEmployeeRequest $request, Company $company): JsonResponse
     {
-        return response()->json($this->service->create($request->validated()));
+        return response()->json($this->service->create($request->validated(), $company->id));
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee): JsonResponse

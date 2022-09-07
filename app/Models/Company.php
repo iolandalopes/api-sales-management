@@ -19,6 +19,7 @@ class Company extends Model
     protected $fillable = [
         '_id',
         'name',
-        'cnpj',
+        'code',
+        'status',
     ];
 }

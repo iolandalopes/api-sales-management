@@ -19,8 +19,9 @@ class StoreCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => 'required|string',
-            'cnpj'   => 'required|int|digits:14',
+            'name'   => 'required|string',
+            'code'   => 'required|int|digits:14',
+            'status' => 'required|string'
         ];
     }
 }

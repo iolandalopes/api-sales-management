@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(Request $request, Company $company)
     {
         $fields = $request->validate([
             'name'  => 'required|string',
+            'isAdmin' => 'required|boolean',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|confirmed',
         ]);
 
         $user = User::create([
            'name' => $fields['name'],
+           'isAdmin' => $fields['isAdmin'],
+           'companyId' => $company->id,
            'email' => $fields['email'],
            'password' => bcrypt($fields['password']),
         ]);

@@ -23,13 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'api_token',
+        'isAdmin',
+        'companyId',
     ];
-
-    public function employees()
-    {
-        return $this->hasMany(Employee::class);
-    }
 
     /**
      * The attributes that should be hidden for serialization.

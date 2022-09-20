@@ -10,26 +10,7 @@ class SaleService
 {
     public function create(array $data, string $companyId, string $clientId): Model
     {
-        $itens = [];
-
-        $totalItem = 0;
-
-        foreach ($data['products'] as $item) {
-            $product = Product::find($item['_id']);
-            $totalItem += $product->price * $item['quantity'];
-            $item['name'] = $product->name;
-            $itens[] = $item;
-        }
-
-        $data = [
-            'products' => $itens,
-            'userId' => auth()->user()->id,
-            'companyId' => $companyId,
-            'clientId' => $clientId,
-            'total' => $totalItem,
-        ];
-
-        return Sale::create($data);
+        return Sale::create($this->generateSale($data, $companyId, $clientId));
     }
 
     public function show(string $company, string $sale): Model
@@ -45,5 +26,31 @@ class SaleService
     public function delete(Sale $sale): ?bool
     {
         return $sale->delete();
+    }
+
+    public function generateSale(array $data, string $company, string $client): array
+    {
+        $itens = [];
+
+        $totalValue = 0;
+
+        foreach ($data['products'] as $item) {
+            $product = Product::find($item['_id']);
+            $totalValue += $product->price * $item['quantity'];
+            $item['name'] = $product->name;
+            $item['price'] = $product->price;
+            $item['totalItem'] = $product->price * $item['quantity'];
+            $itens[] = $item;
+        }
+
+        $data = [
+            'products' => $itens,
+            'userId' => auth()->user()->id,
+            'companyId' => $company,
+            'clientId' => $client,
+            'total' => $totalValue,
+        ];
+
+        return $data;
     }
 }

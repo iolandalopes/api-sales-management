@@ -45,6 +45,14 @@ class AuthController extends Controller
 
         $user = User::where('email', $fields['email'])->first();
 
+        $company = Company::where('_id', $user->companyId)->first();
+
+        if (!$company->isActive) {
+            return response([
+                'message' => 'Empresa inativa!',
+            ], 403);
+        }
+
         if (!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
                 'message' => 'E-mail ou senha inválidos!',

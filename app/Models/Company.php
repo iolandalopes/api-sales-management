@@ -20,6 +20,6 @@ class Company extends Model
         '_id',
         'name',
         'code',
-        'status',
+        'isActive',
     ];
 }

@@ -107,7 +107,7 @@ return [
         'mongodb' => [
             'driver' => 'mongodb',
             'dsn' => env('MONGODB_DSN'),
-            'database' => env('MONGODB_DATABASE', 'api-employees'),
+            'database' => env('MONGODB_DATABASE', 'sales-management'),
             'options' => [
                 'database' => env('DB_AUTHENTICATION_DATABASE', 'admin'),
             ],

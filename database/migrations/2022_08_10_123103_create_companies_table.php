@@ -12,7 +12,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('code');
-            $table->string('status');
+            $table->string('isActive');
             $table->timestamps();
         });
     }

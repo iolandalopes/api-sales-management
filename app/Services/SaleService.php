@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SaleService
 {
+    public $total;
+
     public function create(array $data, string $companyId, string $clientId): Model
     {
         return Sale::create($this->generateSale($data, $companyId, $clientId));
@@ -30,25 +32,27 @@ class SaleService
 
     public function generateSale(array $data, string $company, string $client): array
     {
+        $this->total = 0;
         $itens = [];
 
-        $totalValue = 0;
+        $itens = collect($data['products'])->map(function ($value) {
+            $product = Product::find($value['_id']);
 
-        foreach ($data['products'] as $item) {
-            $product = Product::find($item['_id']);
-            $totalValue += $product->price * $item['quantity'];
             $item['name'] = $product->name;
             $item['price'] = $product->price;
-            $item['totalItem'] = $product->price * $item['quantity'];
+            $item['totalItem'] = $product->price * $value['quantity'];
+            $this->total += $item['totalItem'];
             $itens[] = $item;
-        }
+
+            return $item;
+        });
 
         $data = [
             'products' => $itens,
             'userId' => auth()->user()->id,
             'companyId' => $company,
             'clientId' => $client,
-            'total' => $totalValue,
+            'total' => $this->total,
         ];
 
         return $data;

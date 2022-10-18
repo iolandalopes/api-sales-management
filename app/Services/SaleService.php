@@ -40,6 +40,7 @@ class SaleService
 
             $item['name'] = $product->name;
             $item['price'] = $product->price;
+            $item['quantity'] = $value['quantity'];
             $item['totalItem'] = $product->price * $value['quantity'];
             $this->total += $item['totalItem'];
             $itens[] = $item;
